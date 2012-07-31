@@ -2,16 +2,9 @@ require 'capybara'
 require 'capybara/dsl'
 require 'selenium-webdriver'
 
-
-
-
-
 include Capybara::DSL
 
-def basic_auth(user, pass)
-
-end
-
+# initializes Capybara / sets up the webdriver to control firefox
 def init_capy
   Capybara.register_driver :selenium do |app|
     client = Selenium::WebDriver::Remote::Http::Default.new
@@ -28,14 +21,17 @@ end
 
 init_capy
 sleep(2)
-page.find(:css, "a#cphBody_gvWeek_gvDay1_0_btnTitle1_0").click
-
-
-new_window = page.driver.browser.window_handles.last
-page.within_window new_window do
-  puts page.find_link("Goldstein, David").click
-end
+puts page.find(:css, "span#cphBody_gvWeek_lblgvDay1_0").text
+# page.find(:css, "a#cphBody_gvWeek_gvDay1_0_btnTitle1_0").click
 
 gets
-page.find(:css, "a#cphBody_gvWeek_gvDay1_0_btnTitle1_1").click
-gets
+# grab each day of the week
+# new_window = page.driver.browser.window_handles.last
+# page.within_window new_window do
+#   puts page.find_link("Goldstein, David").click
+# end
+
+# gets
+# page.find(:css, "a#cphBody_gvWeek_gvDay1_0_btnTitle1_1").click
+# gets
+
