@@ -15,7 +15,8 @@ def init_capy(username, password)
     Capybara::Selenium::Driver.new(app, :browser => :firefox, :http_client => client, :resynchronization_timeout => 10000)
   end
 
-  Capybara.current_driver = :selenium
+  Capybara.current_driver = :seleniumrequire "scrape"
+  
   Capybara.app_host = "https://#{username}:#{password}@casemed.case.edu"
   page.driver.options[:resynchronize] = true
   page.visit("/ecurriculum")
@@ -29,7 +30,6 @@ def get_week_data
     # day[:announcements].append(get_announcements(n))
     week.push(day)
   end
-
   week
 end
 
@@ -49,6 +49,7 @@ def get_events(day)
     time_selector = generate_event_time_id(day, event_number)
     break if page.has_no_selector?(time_selector)
     event_title = page.find(:css, title_selector).text
+    # get event details
     events.push(event_title)
     puts event_title
   end
@@ -80,6 +81,14 @@ def generate_event_title_id(weekday, event_number)
   end
 end
 
+def get_event_details(event_title_id)
+  page.find(:css, event_title_id).click
+  # grab each day of the week
+  new_window = page.driver.browser.window_handles.last
+  page.within_window new_window do
+    # get more details
+  end
+end
 
 ###### BEGIN EXECUTION ######
 
