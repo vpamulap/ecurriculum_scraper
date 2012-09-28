@@ -15,7 +15,7 @@ def init_capy(username, password)
     Capybara::Selenium::Driver.new(app, :browser => :firefox, :http_client => client, :resynchronization_timeout => 10000)
   end
 
-  Capybara.current_driver = :seleniumrequire "scrape"
+  Capybara.current_driver = :selenium
   
   Capybara.app_host = "https://#{username}:#{password}@casemed.case.edu"
   page.driver.options[:resynchronize] = true
@@ -50,6 +50,7 @@ def get_events(day)
     break if page.has_no_selector?(time_selector)
     event_title = page.find(:css, title_selector).text
     # get event details
+    get_event_details(title_selector)
     events.push(event_title)
     puts event_title
   end
@@ -87,8 +88,15 @@ def get_event_details(event_title_id)
   new_window = page.driver.browser.window_handles.last
   page.within_window new_window do
     # get more details
+    puts
+    puts "testing content"
+    event_address = page.find(:css, "span#gvRooms_lblAddress_0").text
+    event_room = page.find(:css, "span#gvRooms_lblRoom_0").text    
+    #close details popup
+    page.execute_script "window.close();"
   end
 end
+
 
 ###### BEGIN EXECUTION ######
 
